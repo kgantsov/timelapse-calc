@@ -7925,12 +7925,41 @@ var _elm_lang$elm_architecture_tutorial$Main$displayTime = function (seconds) {
 								_elm_lang$core$Basics$toString(s),
 								's ')))))));
 };
-var _elm_lang$elm_architecture_tutorial$Main$toInt = function (_p0) {
+var _elm_lang$elm_architecture_tutorial$Main$nth = F2(
+	function (n, l) {
+		return A2(
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			_elm_lang$core$List$head(
+				A2(
+					_elm_lang$core$List$take,
+					1,
+					A2(_elm_lang$core$List$drop, n, l))));
+	});
+var _elm_lang$elm_architecture_tutorial$Main$displaySize = function (size) {
+	var _p0 = size;
+	if (_p0 === 0) {
+		return '0 B';
+	} else {
+		var i = _elm_lang$core$Basics$floor(
+			A2(_elm_lang$core$Basics$logBase, 1024, size));
+		var p = Math.pow(1024, i);
+		var s = size / _elm_lang$core$Basics$toFloat(p);
+		var size_name = _elm_lang$core$Native_List.fromArray(
+			['MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']);
+		var unit = A2(_elm_lang$elm_architecture_tutorial$Main$nth, i, size_name);
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(s),
+			A2(_elm_lang$core$Basics_ops['++'], ' ', unit));
+	}
+};
+var _elm_lang$elm_architecture_tutorial$Main$toInt = function (_p1) {
 	return A2(
 		_elm_lang$core$Maybe$withDefault,
 		0,
 		_elm_lang$core$Result$toMaybe(
-			_elm_lang$core$String$toInt(_p0)));
+			_elm_lang$core$String$toInt(_p1)));
 };
 var _elm_lang$elm_architecture_tutorial$Main$calculate = function (model) {
 	var d = _elm_lang$core$Basics$round(1.2);
@@ -7956,7 +7985,7 @@ var _elm_lang$elm_architecture_tutorial$Main$calculate = function (model) {
 		}(model));
 	var length = ((length_h * 3600) + (length_m * 60)) + length_s;
 	var photos = length * fps;
-	var total_size = _elm_lang$core$Basics$toFloat(size * photos) / 1024;
+	var total_size = _elm_lang$core$Basics$toFloat(size * photos);
 	var interval_s = _elm_lang$elm_architecture_tutorial$Main$toInt(
 		function (_) {
 			return _.interval_s;
@@ -8046,50 +8075,47 @@ var _elm_lang$elm_architecture_tutorial$Main$calculate = function (model) {
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_elm_lang$html$Html$text(
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									_elm_lang$core$Basics$toString(total_size),
-									' GB'))
+								_elm_lang$elm_architecture_tutorial$Main$displaySize(total_size))
 							]))
 					]))
 			]));
 };
 var _elm_lang$elm_architecture_tutorial$Main$update = F2(
 	function (msg, model) {
-		var _p1 = msg;
-		switch (_p1.ctor) {
+		var _p2 = msg;
+		switch (_p2.ctor) {
 			case 'ShootingIntervalH':
 				return _elm_lang$core$Native_Utils.update(
 					model,
-					{interval_h: _p1._0});
+					{interval_h: _p2._0});
 			case 'ShootingIntervalM':
 				return _elm_lang$core$Native_Utils.update(
 					model,
-					{interval_m: _p1._0});
+					{interval_m: _p2._0});
 			case 'ShootingIntervalS':
 				return _elm_lang$core$Native_Utils.update(
 					model,
-					{interval_s: _p1._0});
+					{interval_s: _p2._0});
 			case 'ClipLengthH':
 				return _elm_lang$core$Native_Utils.update(
 					model,
-					{length_h: _p1._0});
+					{length_h: _p2._0});
 			case 'ClipLengthM':
 				return _elm_lang$core$Native_Utils.update(
 					model,
-					{length_m: _p1._0});
+					{length_m: _p2._0});
 			case 'ClipLengthS':
 				return _elm_lang$core$Native_Utils.update(
 					model,
-					{length_s: _p1._0});
+					{length_s: _p2._0});
 			case 'FramesPerSecond':
 				return _elm_lang$core$Native_Utils.update(
 					model,
-					{fps: _p1._0});
+					{fps: _p2._0});
 			default:
 				return _elm_lang$core$Native_Utils.update(
 					model,
-					{size: _p1._0});
+					{size: _p2._0});
 		}
 	});
 var _elm_lang$elm_architecture_tutorial$Main$Model = function (a) {

@@ -207,6 +207,23 @@ view model =
 toInt : String -> Int
 toInt = String.toInt >> Result.toMaybe >> Maybe.withDefault 0
 
+nth : Int -> List String -> String
+nth n l = (Maybe.withDefault "" (List.head (List.take 1 (List.drop n l))))
+
+displaySize : Float -> String
+displaySize size =
+  case size of
+    0 -> "0 B"
+    _ ->
+      let
+        size_name = ["MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+        i = floor (logBase 1024 size)
+        p = 1024 ^ i
+        s = size / (toFloat p)
+        unit = nth i size_name
+      in
+        (toString s) ++ " " ++ unit
+
 displayTime : Int -> String
 displayTime seconds =
   let
@@ -235,7 +252,7 @@ calculate model =
     length = length_h * 3600 + length_m * 60 + length_s
     duration = interval * fps * length
     photos = length * fps
-    total_size = toFloat (size * photos) / 1024
+    total_size = toFloat (size * photos)
     d = round 1.2
   in
     table [] [ tr [
@@ -259,7 +276,7 @@ calculate model =
                   [ td [] [ text "Total memory usage" ]
                   , td [
                        ]
-                       [ text ((toString total_size) ++ " GB")
+                       [ text (displaySize total_size)
                        ]
                   ]
              ]
