@@ -7897,6 +7897,34 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
+var _elm_lang$elm_architecture_tutorial$Main$displayTime = function (seconds) {
+	var s = A2(_elm_lang$core$Basics_ops['%'], seconds, 60);
+	var m = (A2(_elm_lang$core$Basics_ops['%'], seconds, 3600) / 60) | 0;
+	var h = (A2(_elm_lang$core$Basics_ops['%'], seconds, 86400) / 3600) | 0;
+	var d = (seconds / 86400) | 0;
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_elm_lang$core$Basics$toString(d),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'd ',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				_elm_lang$core$Basics$toString(h),
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'h ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(m),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'm ',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Basics$toString(s),
+								's ')))))));
+};
 var _elm_lang$elm_architecture_tutorial$Main$toInt = function (_p0) {
 	return A2(
 		_elm_lang$core$Maybe$withDefault,
@@ -7942,8 +7970,7 @@ var _elm_lang$elm_architecture_tutorial$Main$calculate = function (model) {
 			return _.interval_h;
 		}(model));
 	var interval = ((interval_h * 3600) + (interval_m * 60)) + interval_s;
-	var duration = _elm_lang$core$Basics$round(
-		_elm_lang$core$Basics$toFloat((interval * fps) * length) / 60);
+	var duration = (interval * fps) * length;
 	return A2(
 		_elm_lang$html$Html$table,
 		_elm_lang$core$Native_List.fromArray(
@@ -7971,10 +7998,7 @@ var _elm_lang$elm_architecture_tutorial$Main$calculate = function (model) {
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_elm_lang$html$Html$text(
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									_elm_lang$core$Basics$toString(duration),
-									' minutes'))
+								_elm_lang$elm_architecture_tutorial$Main$displayTime(duration))
 							]))
 					])),
 				A2(

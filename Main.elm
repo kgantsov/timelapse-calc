@@ -207,6 +207,18 @@ view model =
 toInt : String -> Int
 toInt = String.toInt >> Result.toMaybe >> Maybe.withDefault 0
 
+displayTime : Int -> String
+displayTime seconds =
+  let
+    d = seconds // 86400
+    h = (seconds % 86400) // 3600
+    m = (seconds % 3600) // 60
+    s = seconds % 60
+  in
+    (toString d) ++ "d " ++ (toString h) ++ "h " ++ (toString m) ++ "m " ++ (toString s) ++ "s "
+
+
+
 
 calculate : Model -> Html msg
 calculate model =
@@ -221,7 +233,7 @@ calculate model =
     size = (toInt (.size model))
     interval = interval_h * 3600 + interval_m * 60 + interval_s
     length = length_h * 3600 + length_m * 60 + length_s
-    duration = round (toFloat (interval * fps * length) / 60)
+    duration = interval * fps * length
     photos = length * fps
     total_size = toFloat (size * photos) / 1024
     d = round 1.2
@@ -231,7 +243,7 @@ calculate model =
                   [ td [] [ text "Event duration" ]
                   , td [
                        ]
-                       [ text ((toString duration) ++ " minutes")
+                       [ text (displayTime duration)
                        ]
                   ]
              , tr [
